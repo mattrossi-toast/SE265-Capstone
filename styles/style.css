@@ -1,5 +1,5 @@
 body{
-    background-color: #DEDFE1;
+    background-color: #87D37C;
 }
 
 .goal-template{
@@ -7,19 +7,71 @@ body{
     width:800px;
     background-color: #87D37C;
     box-shadow: 8px 8px 8px 8px #888888;
+    float:left;
+
 }
 
 .answer{
-
-    background-color:black;
     width:100px;
-    height:100px;
-    border:2px solid black;
+    height:20px;
+    border-radius:8px;
+    transition-duration:0.4s;
+    margin-right:15px;
+}
+
+.answer:hover{
+
+    box-shadow: 8px 8px 8px 8px #888888;
+
+
 }
 
 .answer-one{
 
-    background-color:black;
+    background-color: #e74c3c;
     width:100px;
-    height:100px;
+    height:150px;
+}
+
+.answer-two{
+
+    background-color: #e67e22;
+    width:100px;
+    height:150px;
+}
+
+.answer-three{
+
+    background-color: #f1c40f;
+    width:100px;
+    height:150px;
+}
+
+.answer-four{
+
+    background-color: #2980b9;
+    width:100px;
+    height:150px;
+}
+.answer-five{
+
+    background-color: #27ae60;
+    width:100px;
+    height:150px;
+}
+
+.question-container{
+    width:600px;
+    border:2px solid black;
+    margin: 100px 100px 100px 0px;
+    margin:auto;
+}
+
+.tracker-head{
+    width:75%;
+    margin:auto;
+}
+
+.answer:active{
+    background-color:rgba(0, 0, 0, 0.1);
 }
