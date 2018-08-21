@@ -1,18 +1,4 @@
-var chartData = [];
-var chartLabels = [];
-function sendAnswer(number){
-    console.log(number);
-    var d = new Date();
-       chartData.push(number);
-       chartLabels.push(d.toLocaleDateString());
-   drawChart(chartData);
-    //$(".answer").addClass("answer-disabled");
-}
-
-document.ready(function(){
-drawChart(0);
-});
-
+<script>
 function drawChart(chartData) {
 for(var i = 0; i <= 1; i++){
     var ctx = document.getElementById("myChart" + i).getContext('2d');
@@ -23,10 +9,10 @@ for(var i = 0; i <= 1; i++){
         type: 'line',
 
         data: {
-            labels: chartLabels,
+            labels: chartData['question' + (i +1)]['date'],
             datasets: [{
                 label: 'Rating',
-                data: chartData,
+                data: chartData['question'  + (i +1)]['response'],
 		backgroundColor: [
 		'rgba(211,124,126,1)',
 
@@ -68,3 +54,4 @@ for(var i = 0; i <= 1; i++){
     });
 }}
 
+</script>

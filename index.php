@@ -1,3 +1,5 @@
+<? error_reporting(0);?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -13,7 +15,9 @@
 </head>
 <body>
 <nav class="sidenav">  ASDASDAS DADASDASD DSADASD</nav>
+
+<?php require "models/reports.php" ?>
 <?php include_once "views/tracker.php" ?>
-<script src="charts.js"></script>
+<?php require "charts.php" ?>
 </body>
 </html>
