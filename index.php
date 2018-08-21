@@ -1,5 +1,7 @@
-<? error_reporting(0);?>
+<?php error_reporting(0);
 
+require "charts.php";
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -14,10 +16,10 @@
     <title>Step By Step</title>
 </head>
 <body>
-<nav class="sidenav">  ASDASDAS DADASDASD DSADASD</nav>
-
-<?php require "models/reports.php" ?>
-<?php include_once "views/tracker.php" ?>
-<?php require "charts.php" ?>
+<div class="all">
+<nav class="sidenav">  ASDAsdfsdfAS agdsgafASD</nav>
+<?php include_once("views/tracker.php") ?>
+<?php require "models/reports.php";?>
 </body>
+</div>
 </html>

@@ -11,8 +11,8 @@
                 })
                 .then(function (myJson) {
                     report = myJson;
-                    console.log(report);
-                    drawChart(report['report']);
+                    console.log(myJson);
+                    drawChart(report);
                 });
         });
 </script>
@@ -56,27 +56,26 @@
 <script>
 
     function sendAnswer(questionID,number,report){
-
         console.log("HERE" + report);
         console.log(number);
         var d = new Date();
 
         report['report']['question' + questionID]['response'].push(number);
         report['report']['question' + questionID]['date'].push(d.toLocaleDateString());
-        drawChart(report['report']);
-
+        drawChart(report);
+        report = JSON.stringify(report);
         $.ajax({
-            type: "GET",
-            url: "models/reports.php",
-            data: {"report": report},
-            success: function(data){
-                console.log("success: " + data);
+            type: 'POST',
+            url: 'models/reports.php',
+            data: {report: report},
+            success: function(response){
+                console.log("success: " + response + " Data: " + report.question1);
             },
             error: function(err){
                 console.log("err: " + err);
             }
         });
-        //$(".answer").addClass("answer-disabled");
-    }
+};
 
+        //$(".answer").addClass("answer-disabled");
 </script>

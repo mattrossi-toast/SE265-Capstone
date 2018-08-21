@@ -1,15 +1,26 @@
+@font-face{
+    font-family:'Jost';
+    src: url('../OpenType/Jost-400-Book.otf');
+}
+
 body{
     background-color: #87D37C;
     margin-left:285px;
+    font-family: 'Jost';
+   
 }
-
+.container {
+    grid-template-columns: 400px 50px 100px;
+    grid-template-rows: 80px auto 80px;
+    grid-column-gap: 10px;
+    grid-row-gap: 15px;
+}
 .goal-template{
     min-height: 600px;
     min-width:600px;
     background-color: #87D37C;
     box-shadow: 8px 8px 8px 8px #888888;
     margin-bottom:100px;
-
 }
 
 .answer{
@@ -84,7 +95,7 @@ body{
     height: 100%; /* 100% Full-height */
     position: fixed; /* Stay in place */
     z-index: 1; /* Stay on top */
-   top: 0; /* Stay at the top */
+    top: 0; /* Stay at the top */
     left: 0;
     background-color:#A9F59E; /* Black*/
     overflow-x: hidden; /* Disable horizontal scroll */

@@ -9,10 +9,10 @@ for(var i = 0; i <= 1; i++){
         type: 'line',
 
         data: {
-            labels: chartData['question' + (i +1)]['date'],
+            labels: chartData['report']['question' + (i +1)]['date'],
             datasets: [{
                 label: 'Rating',
-                data: chartData['question'  + (i +1)]['response'],
+                data: chartData['report']['question'  + (i +1)]['response'],
 		backgroundColor: [
 		'rgba(211,124,126,1)',
 
