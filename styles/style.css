@@ -4,16 +4,27 @@
 }
 
 body{
-    background-color: #87D37C;
-    margin-left:285px;
+    background-color: #f7f7f7;
     font-family: 'Jost';
    
 }
-.container {
-    grid-template-columns: 400px 50px 100px;
-    grid-template-rows: 80px auto 80px;
-    grid-column-gap: 10px;
-    grid-row-gap: 15px;
+
+.logIn{
+height:100%;
+}
+.yo{
+  margin:auto;
+}
+.signUp{
+    height:70px;
+    background-color: #87D37C;
+    display: flex;
+    width: 100%;
+
+}
+
+nav{
+    display:flex;
 }
 .goal-template{
     min-height: 600px;

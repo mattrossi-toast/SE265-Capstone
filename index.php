@@ -1,25 +1,51 @@
 <?php error_reporting(0);
+require "models/users.php";
+$email =  $_POST['Email'];
+$pw = $_POST['PW'];
+$action = $_REQUEST['action'];
+$emailConf = $_POST['EmailConf'];
+$pwConf = $_POST['PWConf'];
+$fName = $_POST['fName'];
+$lName = $_POST['lName'];
+$bDay = $_POST['birthday'];
+$errorString = '';
+switch($action){
+    case 'Login':
+    $hash = grabHash($email);
+    var_dump($hash);
+    var_dump(password_hash($pw, PASSWORD_DEFAULT));
+    if(password_verify($pw, $hash)){
+    include_once('views/tracker.php');
+    }
+    break;
 
-require "charts.php";
+    case 'Register':
+    
+    if(confirm($email, $emailConf) && confirm($pw, $pwConf) && emailNotExists($email)){
+    $hash = password_hash($pw, PASSWORD_DEFAULT);
+    addUser($email, $hash, $fName, $lName, $bDay);
+    include_once('views/tracker.php');
+    }
+    if(!confirm($email,$emailConf)){
+        
+        $errorString .= "Email must match confirmation";
+    }
+
+   if(!confirm($pw,$pwConf)){
+        $errorString .= "<br/> Password must match confirmation";   
+    }
+
+    if(emailNotExists($email) == false){
+        $errorString .= "<br/> Email already registered.";   
+    }
+    echo("hey");
+    include_once('views/userLogin.php');
+    
+    break;
+
+    case '':
+    include_once('views/userLogin.php');
+    break;
+
+}
 ?>
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles/style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <title>Step By Step</title>
-</head>
-<body>
-<div class="all">
-<nav class="sidenav">  ASDAsdfsdfAS agdsgafASD</nav>
-<?php include_once("views/tracker.php") ?>
-<?php require "models/reports.php";?>
-</body>
-</div>
-</html>

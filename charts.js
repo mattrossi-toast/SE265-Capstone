@@ -1,4 +1,4 @@
-<script>
+
 function drawChart(chartData) {
 for(var i = 0; i <= 1; i++){
     var ctx = document.getElementById("myChart" + i).getContext('2d');
@@ -54,4 +54,4 @@ for(var i = 0; i <= 1; i++){
     });
 }}
 
-</script>
+

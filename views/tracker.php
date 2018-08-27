@@ -1,32 +1,54 @@
 
-<script>
-
-    var report;
-    $(document).ready(
-        function() {
-            fetch('reports/1.json')
-                .then(function (response) {
-                    console.log(response);
-                    return response.json();
-                })
-                .then(function (myJson) {
-                    report = myJson;
-                    console.log(myJson);
-                    drawChart(report);
+<!DOCTYPE HTML>
+<html>
+	<head>
+    <link rel='stylesheet' type='text/css' href='//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
+        <link rel="stylesheet" type='text/css' href="styles/style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js'></script>
+        <script src='charts.js'></script>
+        <script>
+            var report;
+            $(document).ready(
+                function() {
+                     fetch('reports/1.json')
+                    .then(function (response) {
+                        console.log(response);
+                        return response.json();
+                    })
+                    .then(function (myJson) {
+                        report = myJson;
+                        console.log(myJson);
+                        drawChart(report);
                 });
         });
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	</head>
+	<body>
+	<nav  class="signUp row">
+	<span class='col-sm-2'> </span>
+	<h1  class="col-sm-3 "> Step By Step </h1>
+	<span class='col-sm-2'> </span>
+	<div class="yo col-sm-4" >
+	<form action="index.php" method="post">
+				<label> Email </label>
+				<input type="text" name="Email" value="" > </input>
+				<label> Password </label>
+				<input type="password" name="PW" value="" > </input>
+				
+				<input type="submit" name="action" value="Login"> </input>
+			</form>
+			<a style="margin-left:300px;" data-toggle="modal" data-target="#myModal">Forgot Password?</a>
+	</div>
+	</nav>
 <div>
     <div class="tracker-head">
 <h1>  <?php echo "It is " . date("l, jS \of F Y"); ?> </h1>
 <h4> Your Template: </h4>
     </div>
     <br />
-
-
 <?php for( $i = 0; $i < 2; $i++){ ?>
-    <div class="goal-template">
     <div class="chart">
      <canvas id='<?php echo "myChart" . $i; ?>'height="10" width="10"></canvas>
      </div>
@@ -45,12 +67,11 @@
             <div onclick="sendAnswer(<?php echo $i + 1?>,5, report)"class="answer answer-five col-lg-2 col-md-2 col-sm-2">
             </div>
     </div>
-    </div>
  <?php   } ?>
 
 
 </div>
-
+</body>
 
 
 <script>
@@ -79,3 +100,4 @@
 
         //$(".answer").addClass("answer-disabled");
 </script>
+</html>

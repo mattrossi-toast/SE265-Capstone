@@ -1,38 +1,69 @@
 <?php
+
+require "db.php";
+
+function confirm($value, $valueConf){
+	if(!is_null($value && !is_null($valueConf))){
+	if($value == $valueConf){
+		$return = true;
+	}
+	else{
+		$return = false;
+	}}
+
+	else{
+		$return = false;
+	}
+
+	return $return;
+
+
+}
 // model file for users table
-function addUser($email, $password){
+function addUser($email, $password, $fName, $lName, $birthday){
 	global $db;
-	$sql = "INSERT INTO users (user_id, email, password, created) VALUES (NULL, :email, :password, NOW())";
+	var_dump($email, $password, $fName, $lName, $birthday);
+	$sql = "INSERT INTO users (userID,FName, LName, Email, PW, TemplateID, Birthday) VALUES (NULL, :fName, :lName, :email, :pass,0,:birthday)";
 	$stmt = $db->prepare($sql);
 	$stmt->bindParam(':email', $email);
-	$stmt->bindParam(':password', $password);
-	$stmt->execute();	
-	
-	
+	$stmt->bindParam(':pass', $password);
+	$stmt->bindParam(':fName', $fName);
+	$stmt->bindParam(':lName', $lName);
+	$stmt->bindParam(':birthday', $birthday);
+	$stmt->execute();		
 }
+
 
 function grabHash($email){
 	global $db;
 	
-	$sql = "SELECT password from users WHERE email = :email";;
+	$sql = "SELECT PW from users WHERE email = :email";;
 	$stmt = $db->prepare($sql);
 	$stmt->bindParam(':email', $email);
 	$stmt->execute();
 	$results = $stmt->fetchAll();
-	return $results;
+	return $results[0]["PW"];
 	
 	
 }	
 
-function isEmailUnique($email){
+function emailNotExists($email){
 	global $db;
 	
-	$sql = "SELECT * from users WHERE email = :email";;
+	$sql = "SELECT * from users WHERE email = :email";
 	$stmt = $db->prepare($sql);
 	$stmt->bindParam(':email', $email);
 	$stmt->execute();
 	$results = $stmt->fetchAll();
-	return $results;
+	if($results){
+		$return = false;
+	}
+
+	else{
+		$return = true;
+	}
+
+	return $return;
 	
 }
 
