@@ -1,32 +1,15 @@
-
-
 <?php
+include "db.php";
+function getReportData($userId, $templateId){
+    global $db;
+    $sql = "SELECT ReportID FROM reports WHERE UserID = :userId AND TemplateID = :templateId";
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':userId', $userId);
+    $stmt->bindParam(':templateId', $templateId);
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$report = $_POST['report'];
-if(isset($_POST['report'])){
-    var_dump("report" . $report);
-    file_put_contents("../reports/1.json", $report);
-
+    return $results[0]["ReportID"];
 }
-
-
-
-function getReportData($userId){
-
-$data = file_get_contents("../reports/" . $userId . ".json");
-    $json = json_decode($data, true);
-
-    return($json);
-}
-
-
-if($report){
-    var_dump($report);
-}
-
-
- //   $json = json_encode($report);
- //   echo $report;
-
 ?>
 

@@ -22,7 +22,6 @@ function confirm($value, $valueConf){
 // model file for users table
 function addUser($email, $password, $fName, $lName, $birthday){
 	global $db;
-	var_dump($email, $password, $fName, $lName, $birthday);
 	$sql = "INSERT INTO users (userID,FName, LName, Email, PW, TemplateID, Birthday) VALUES (NULL, :fName, :lName, :email, :pass,0,:birthday)";
 	$stmt = $db->prepare($sql);
 	$stmt->bindParam(':email', $email);
@@ -45,7 +44,31 @@ function grabHash($email){
 	return $results[0]["PW"];
 	
 	
-}	
+}
+
+function grabUserId($email){
+	global $db;
+	$sql = "SELECT UserID from users WHERE email = :email";;
+	$stmt = $db->prepare($sql);
+	$stmt->bindParam(':email', $email);
+	$stmt->execute();
+	$results = $stmt->fetchAll();
+	return $results[0]["UserID"];
+	
+	
+}
+
+function grabTemplateId($email){
+	global $db;
+	$sql = "SELECT TemplateID from users WHERE email = :email";;
+	$stmt = $db->prepare($sql);
+	$stmt->bindParam(':email', $email);
+	$stmt->execute();
+	$results = $stmt->fetchAll();
+	return $results[0]["TemplateID"];
+	
+	
+}
 
 function emailNotExists($email){
 	global $db;
