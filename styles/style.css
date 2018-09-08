@@ -121,3 +121,12 @@ nav{
     pointer-events: none;
 
 }
+
+.submitButton{
+
+    display:none;
+}
+
+.view{
+    display:inline;
+}

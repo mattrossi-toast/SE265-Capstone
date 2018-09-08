@@ -1,4 +1,6 @@
-
+<?php
+session_start();
+?>
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -19,6 +21,9 @@ include_once("models/templates.php");
 include_once("models/reports.php");
 
 $email =  $_POST['Email'];
+
+$_SESSION['Email'] = $email;
+var_dump($_SESSION["Email"]);
 $pw = $_POST['PW'];
 $action = $_REQUEST['action'];
 $emailConf = $_POST['EmailConf'];
@@ -32,12 +37,14 @@ $responseId = $_POST['response'];
 $errorString = '';
 switch($action){
     case 'Login':
-    $hash = grabHash($email);
+    $hash = grabHash($_SESSION["Email"]);
     $userId= grabUserId($email);
+    $_SESSION['id'] = $userId;
     $templateId = grabTemplateId($email);
     $questions = getQuestions($templateId);
     $reportId = getReportData($userId, $templateId);
-    $dates = getDatesByReportId($reportId, $questionId); 
+    $responses = getResponsesByReportId($reportId);
+    $dates = getDatesByReportId($reportId, $questionId);
     for($i=0; $i < sizeof($questions); $i++){
         
         $response[$i] = [];
@@ -68,7 +75,6 @@ switch($action){
     if(confirm($email, $emailConf) && confirm($pw, $pwConf) && emailNotExists($email)){
     $hash = password_hash($pw, PASSWORD_DEFAULT);
     addUser($email, $hash, $fName, $lName, $bDay);
-    include_once('views/tracker.php');
     }
     if(!confirm($email,$emailConf)){
         
@@ -86,8 +92,15 @@ switch($action){
     
     break;
 
+    case 'User':
+    $user = getUserData($_SESSION['id']);
+    include_once('views/shared/userEdit.php');
+    break;
+    
+    case 'Logout':
+    include_once('views/userLogin.php');
+    break;
     case '':
-    include_once("charts.php");
     include_once('views/userLogin.php');
     break;
 

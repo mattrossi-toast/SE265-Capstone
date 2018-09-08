@@ -1,4 +1,7 @@
 <?php
+session_start(); 
+echo session_id();
+var_dump($_SESSION['Email']);
 
 require "db.php";
 
@@ -88,6 +91,16 @@ function emailNotExists($email){
 
 	return $return;
 	
+}
+
+function getUserData($id){
+	global $db;
+	$sql = "SELECT * from users WHERE UserID = :id";
+	$stmt = $db->prepare($sql);
+	$stmt->bindParam(':id', $id);
+	$stmt->execute();
+	$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	return $results;	
 }
 
 

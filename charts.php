@@ -4,25 +4,24 @@
     echo('var responses =' . $chartData . "; \n");
     echo('var dates =' . $chartLabels . "; \n");
     echo('var questions =' . json_encode($questions) . ";");
+    echo('var userId =' . $userId . ";");
     ?>
 $(document).ready(function(){
-    
     populateCharts();
     
 });
 
 function populateCharts(index, response, date){
     if(response && date){
-        console.log("yay" +" "+ responses +" "+ dates)
         responses[index].push(response);
         dates[index].push(date);
-    }
-    console.log("Questions: " + JSON.stringify(questions));
+    }   
+    console.log(responses, dates);
     drawChart(responses, dates);
 }
 
 function drawChart(chartData, chartLabels) {
-    console.log(chartData[questions[0]["QuestionID"]]);
+    console.log(chartData, chartLabels);
 for(var i = 0; i <= 1; i++){
     var ctx = document.getElementById("myChart" + i).getContext('2d');
     ctx.width = 500;
