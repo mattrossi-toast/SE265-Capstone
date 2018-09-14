@@ -1,9 +1,43 @@
 <?php
 session_start(); 
 echo session_id();
-var_dump($_SESSION['Email']);
+include "../db.php";
+if($_POST['user']){
+	$user = $_POST['user'];
+	var_dump($user);
+	updateUser($user['fName'], $user['lName'],$user['birthday'],$user['email'],$user['userId']);
+}
 
-require "db.php";
+if($_POST['pw']){
+	$pass= $_POST['pw'];
+	$hash = password_hash($pass, PASSWORD_DEFAULT);
+	$id = $_POST['id'];
+	changePassword($hash, $id);
+}
+
+function changePassword($pass, $userId){
+	global $db;
+	$sql = "UPDATE users SET PW = :pw WHERE UserID = :userId";
+	$stmt = $db->prepare($sql);
+	$stmt->bindParam(':userId', $userId);
+	$stmt->bindParam(':pw', $pass);
+	$stmt->execute();	
+}
+
+function updateUser($fName,$lName,$birthday,$email, $userId){
+	global $db;
+	$sql = "UPDATE users SET FName = :fName, LName = :lName, Email = :email, Birthday = :birthday WHERE UserID = :userId ";
+	$stmt = $db->prepare($sql);
+	$stmt->bindParam(':userId', $userId);
+	$stmt->bindParam(':email', $email);
+	$stmt->bindParam(':fName', $fName);
+	$stmt->bindParam(':lName', $lName);
+	$stmt->bindParam(':birthday', $birthday);
+	$stmt->execute();	
+
+
+}
+
 
 function confirm($value, $valueConf){
 	if(!is_null($value && !is_null($valueConf))){
@@ -35,6 +69,28 @@ function addUser($email, $password, $fName, $lName, $birthday){
 	$stmt->execute();		
 }
 
+function getAllUsers(){
+	global $db;
+	$sql = "SELECT * from users";
+	$stmt = $db->prepare($sql);
+	$stmt->execute();
+	$results = $stmt->fetchAll();
+	return $results;
+}
+
+function getAdminStatus($userId){
+	global $db;
+
+	$sql = "SELECT isAdmin from users WHERE UserID = :userId";;
+	$stmt = $db->prepare($sql);
+	$stmt->bindParam(':userId', $userId);
+	$stmt->execute();
+	$results = $stmt->fetchAll();
+	var_dump("hey" . $userId);
+	return $results[0]["isAdmin"];
+	
+	
+}
 
 function grabHash($email){
 	global $db;
@@ -103,5 +159,13 @@ function getUserData($id){
 	return $results;	
 }
 
+function changeUserTemplate($userId, $templateId){
+    global $db;
+	$sql = "UPDATE users SET TemplateID = :templateId WHERE UserID = :userId";
+	$stmt = $db->prepare($sql);
+	$stmt->bindParam(':templateId', $templateId);
+	$stmt->bindParam(':userId', $userId);
+	$stmt->execute();
+}
 
 ?>

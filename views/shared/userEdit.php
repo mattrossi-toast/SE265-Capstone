@@ -8,7 +8,7 @@
 	        <h1 class="col-sm-3"> Step By Step </h1>
 	    <span class='col-sm-2'> </span>
         <form action="index.php" method="POST">
-            <button name='action' value='Login'> Home </button>
+            <button name='action' value='Home'> Home </button>
             <button name='action' value='User'> My Account </button>
             <button name='action' value='Logout'> Logout </button>
         </form>
@@ -24,20 +24,41 @@
 <input disabled class="isDisabled" type="date" id="birthday" value='<?php echo date('Y-m-d', strtotime($user[0]['Birthday'])); ?>' />
 <label  style="display:block"> Email </label>
 <input disabled class="isDisabled" type="text" id="email" value='<?php echo $user[0]['Email'] ?>' />
+<input type="hidden" id="id" value='<?php echo $user[0]['UserID'] ?>' />
 </form>
 <button class="button" onclick="test()" > Edit </button>
 <button  class="submitButton" onclick="submit()" > Submit </button>
-<form  action="index.php" method="Post">
+
 <label style="display:block"> Password </label>
-<input type="password" name="PW" value=""/>
+<input required type="password" id="PW" value=""/>
 <label style="display:block"> Confirm Password </label>
-<input type="password" name="PWConf" value="" />
-<input type="submit" name="action" value="Change Password"/>
-</form>
+<input required type="password" id="PWConf" value="" />
+<input type="submit" onclick="changePass()"> Change Password </input>
+
 
 </div>
 <script>
+function changePass(){
 
+    if($('#PW').val() == $('#PWConf').val()){
+        pw = $('#PW').val();
+        id = $("#id").val();
+        $.ajax({
+            type: 'POST',
+            url: 'models/users.php',
+            data: {pw: pw, id: id},
+            success: function(response){           
+                console.log(response);  
+            },
+            error: function(err){
+                console.log("err: " + JSON.stringify(err));
+            }
+        });
+
+    }
+
+
+}
 function test(){
     if($(".isDisabled").prop('disabled') == false){
         $(".isDisabled").prop('disabled', true);
@@ -60,20 +81,23 @@ function submit(){
     user['lName'] = $("#lName").val();
     user['birthday'] = $("#birthday").val();
     user['email'] = $("#email").val();
+    user['userId'] = $("#id").val();
 
        $.ajax({
             type: 'POST',
-            url: 'users.php',
+            url: 'models/users.php',
             data: {user: user},
             success: function(response){           
                 console.log(response);  
             },
             error: function(err){
-                console.log("err: " + err);
+                console.log("err: " + JSON.stringify(err));
             }
         });
-
-
+        
+        $(".submitButton").toggleClass("view");
+        $(".isDisabled").prop('disabled', true);
+        $(".button").text("Edit");
 }
 
 </script>

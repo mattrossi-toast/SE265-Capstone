@@ -1,28 +1,35 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
     <?php
-    echo('var responses =' . $chartData . "; \n");
-    echo('var dates =' . $chartLabels . "; \n");
+    if($chartData && $chartLabels){
+    echo('var responses =' . $chartData  . "; \n");
+    echo('var dates =' . $chartLabels  . ";\n");
+    }
+    else{
+    echo('var responses =[];');
+    echo('var dates =[];');
+    }
     echo('var questions =' . json_encode($questions) . ";");
-    echo('var userId =' . $userId . ";");
+    echo('var userId =' . $_SESSION['id'] . ";");
     ?>
-$(document).ready(function(){
-    populateCharts();
-    
-});
+
 
 function populateCharts(index, response, date){
     if(response && date){
         responses[index].push(response);
         dates[index].push(date);
     }   
-    console.log(responses, dates);
+    if(responses && dates){
+        console.log("HEOY! " + responses + dates);
     drawChart(responses, dates);
+    }
+    else{
+        drawChart([],[])
+    }
 }
 
 function drawChart(chartData, chartLabels) {
-    console.log(chartData, chartLabels);
-for(var i = 0; i <= 1; i++){
+for(var i = 0; i <= questions.length - 1; i++){
     var ctx = document.getElementById("myChart" + i).getContext('2d');
     ctx.width = 500;
     ctx.height = 500;

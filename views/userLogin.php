@@ -56,8 +56,6 @@
 <input type="date" name="birthday" value="" />
 <label style="display:block"> Email </label>
 <input type="text" name="Email" value="" />
-<label style="display:block"> Confirm Email </label>
-<input type="text" name="EmailConf" value=""/>
 <label style="display:block"> Password </label>
 <input type="password" name="PW" value=""/>
 <label style="display:block"> Confirm Password </label>

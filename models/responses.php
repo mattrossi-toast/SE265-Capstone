@@ -1,5 +1,6 @@
 <?php
-include "db.php";
+include("../db.php");
+include("db.php");
 
 function jsonifyData($item){
     $preserveSubArrays = false;
@@ -88,7 +89,6 @@ function updateResponseByReportId($reportId, $questionId, $response){
     $stmt->bindParam(':questionId', $questionId);
     $stmt->bindParam(':response', $response);
     $stmt->execute();
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 global $db;

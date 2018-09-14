@@ -126,7 +126,9 @@ nav{
 
     display:none;
 }
-
+.hide{
+    display:none;
+}
 .view{
     display:inline;
 }

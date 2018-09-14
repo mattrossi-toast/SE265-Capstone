@@ -1,7 +1,15 @@
-<?php session_start();
+<?php
 include_once("charts.php") 
-    ?>
+?>
 <script>
+
+$(document).ready(function(){
+    populateCharts();
+    
+    
+});
+
+
 function sendAnswer(index,questionID,number,report){
         var d = new Date();
         var report = {questionId: questionID, report: report, response: number};
@@ -10,7 +18,8 @@ function sendAnswer(index,questionID,number,report){
             type: 'POST',
             url: 'models/responses.php',
             data: {report: report},
-            success: function(response){           
+            success: function(response){ 
+                console.log(response);          
                 populateCharts(index, number, d.toLocaleDateString());    
             },
             error: function(err){
@@ -25,13 +34,14 @@ function changeTemplate(){
             type: 'POST',
             url: 'index.php',
             data: {template_id: template_id},
-            success: function(response){           
-                console.log(response);  
+            success: function(response){
             },
             error: function(err){
                 console.log("err: " + err);
             }
         });
+
+        
 }
 
 
@@ -40,15 +50,20 @@ function changeTemplate(){
 	<span class='col-sm-2'> </span>
 	<h1  class="col-sm-3 "> Step By Step </h1>
 	<span class='col-sm-2'> </span>
-    <select id="dropDownId" onchange="changeTemplate()" style="color:black;" name="template_id">
+    <form method="POST" action="index.php" name="change">
+    <select id="dropDownId" onchange="change.submit();" style="color:black;" name="template_id">
     <?php foreach($templateDropDown as $template):?>
-       <option value='<?php echo($template["TemplateID"]); ?>'<?php  echo $template_id == $template['TemplateID'] ? 'selected = "selected "' : ''?>> <?php echo($template['TemplateName']); ?> </option>
+       <option value='<?php echo($template["TemplateID"]); ?>'<?php  echo $_SESSION['templateId'] == $template['TemplateID'] ? 'selected = "selected "' : ''?>> <?php echo($template['TemplateName']); ?> </option>
     <?php endforeach; ?> 
 	</select>
-	<input type="submit" value="Change Template" onclick="changeTemplate()" />
+    <input type="hidden" name='action' value='Update Template'> </input>
+    </form>
     <form action="index.php" method="POST">
     <button name='action' value='User'> My Account </button>
     <button name='action' value='Logout'> Logout </button>
+    <?php if($isAdmin == 1){ ?>
+        <button name='action' value='Admin'> Admin Portal </button>
+      <?php } ?>
     </form>
 	</nav>
 <div>
@@ -57,7 +72,7 @@ function changeTemplate(){
 <h4> Your Template: </h4>
     </div>
     <br />
-<?php for( $i = 0; $i < 2; $i++){ ?>
+<?php for( $i = 0; $i <= count($questions) - 1; $i++){ ?>
     <div class="chart">
      <canvas id='<?php echo "myChart" . $i; ?>'height="10" width="10"></canvas>
      </div>
