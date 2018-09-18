@@ -17,27 +17,27 @@
 
 <?php foreach($questions as $question){ ?>
     <div>
-        <input disabled id='isDisabled' type="text" style="width:500px"; value='<?php echo($question['QuestionText']); ?>'>
+        <input disabled id='<?php echo('isDisabled' . $question['QuestionID']);?>' type="text" style="width:500px"; value='<?php echo($question['QuestionText']); ?>'>
         <input type=hidden value='<?php echo($question['QuestionID']); ?>'>
-        <button class="button" onclick="edit()" > Edit </button>
-        <button  class="submitButton" onclick="submit()" > Submit </button>
+        <button id='<?php echo('button' . $question['QuestionID']);?>'  onclick="edit(<?php echo($question['QuestionID']);?>)" > Edit </button>
+        <button class='hide' id='<?php echo('submitButton' . $question['QuestionID']);?>'  onclick="submit(<?php echo($question['QuestionID']);?>)" > Submit </button>
     </div>
 <?php }?>
 
 <script>
-function edit(){
-    if($(".isDisabled").prop('disabled') == false){
-        $(".isDisabled").prop('disabled', true);
-        $(".button").text("Edit");
-       
+function edit(QuestionID){
+    console.log('isDisabled' + QuestionID)
+    if($('#isDisabled' + QuestionID).prop('disabled') == false){
+        $('#isDisabled' + QuestionID).prop('disabled', true);
+        $('#button' + QuestionID).text("Edit");
     }
 
     else{
-        $(".isDisabled").prop('disabled', false);
-        $(".button").text("Cancel");
-        $(".submitButton").prop("display","inline");
+        $('#isDisabled' + QuestionID).prop('disabled', false);
+        console.log($('#isDisabled' + QuestionID).val());
+        $('#button' + QuestionID).text("Cancel");
     }
-    $(".submitButton").toggleClass("view");
+   $('#submitButton' + QuestionID).toggleClass("hide");
 
 }
 

@@ -1,6 +1,5 @@
 <?php
 session_start(); 
-echo session_id();
 include("db.php");
 if($_POST['user']){
 	$user = $_POST['user'];

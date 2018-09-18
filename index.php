@@ -11,7 +11,7 @@
 	<body>
 
 <?php 
-error_reporting(0);
+//error_reporting(0);
 include_once("models/responses.php");
 include_once("models/questions.php");
 include_once("models/users.php");
