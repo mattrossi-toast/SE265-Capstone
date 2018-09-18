@@ -1,9 +1,11 @@
+    <?php session_start(); 
+    ?>
     <nav  class="signUp row">
 	<span class='col-sm-2'> </span>
 	<h1  class="col-sm-3 "> Step By Step </h1>
 	<span class='col-sm-2'> </span>
     <form action="index.php" method="POST">
-    <button name='action' value='Back'> Back </button>
+    <button name='action' value='Login'> Back </button>
     <button name='action' value='Logout'> Logout </button>
     </form>
 	</nav>
@@ -13,28 +15,26 @@
 	$strUser .= "<tr >";
 	$strUser .= "<td>" . $user['Fname'] ." " . $user['Lname'] . "</td>";	
 	$strUser .= "<td><form action='index.php' method='get'>";
-	$strUser .= "<button name='userId' value='" . $user['UserID'] . "'>"  . "Edit" . "</button> <input type='hidden' name='action' value='Edit'> </input> </form></td> </tr>";
-	
+	$strUser .= "<button name='userId' value='" . $user['UserID'] . "'>"  . "Edit" . "</button> <input type='hidden' name='action' value='Edit'> </input> </form></td>";
+    $strUser .= "<td> <form action='index.php' method='get'>";
+	$strUser .= "<button name='userId' value='" . $user['UserID'] . "'>"  . "Delete" . "</button> <input type='hidden' name='action' value='Delete'> </input> </form></td></tr>";
 }
 $strUser .= '</table>';
-$strTemp = '<table class="table">';
+$strTemp = "<table class='table'>";
 foreach($templates as $template){ 
 	$strTemp .= "<tr >";
 	$strTemp .= "<td>" . $template['TemplateName'] . "</td>";	
 	$strTemp .= "<td><form action='index.php' method='get'>";
-	$strTemp .= "<button name='userId' value='" . $user['UserID'] . "'>"  . "Edit" . "</button> <input type='hidden' name='action' value='Edit'> </input> </form></td></tr>";
-	
+	$strTemp .= "<button name='templateId' value='" . $template['TemplateID'] . "'>"  . "Edit" . "</button> <input type='hidden' name='action' value='Edit'> </input> </form></td></tr>";
 }
 $strTemp.= '</table>';
 ?>
 <input type="text" id="searchBar" onkeyup="search()" placeholder= "Search For Users...">
 <div>
-<input type="radio" id="searchChoice1"
-     name="search" value="User" onchange="toggleSearch()" checked>
+<input type="radio" id="searchChoice1" name="search" value="User" onchange="toggleSearch()" <?php if($selectedRadio != 'Template'){ echo("checked");}?>> </input>
     <label for="searchChoice1">User</label>
 
-<input type="radio" id="searchChoice2"
-     name="search" value="Template" onchange="toggleSearch()" >
+<input type="radio" id="searchChoice2" name="search" value="Template" onchange="toggleSearch()" <?php if($selectedRadio == 'Template'){ echo("checked");}?> > </input>
     <label for="searchChoice1">Template</label>
 
 <div id='userSearch' class='table'>
@@ -53,6 +53,7 @@ $strTemp.= '</table>';
 </div>
 
 <script>
+
 function toggleSearch(){
 
         $("#userSearch").toggleClass("hide");
@@ -82,7 +83,6 @@ function search(){
   
   tr = table.getElementsByTagName("tr");
 
-  // Loop through all table rows, and hide those who don't match the search query
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[0];
     if (td) {

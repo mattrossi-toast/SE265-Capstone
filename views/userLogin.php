@@ -17,7 +17,6 @@
 	</nav>
 	<div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
-      <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -62,6 +61,7 @@
 <input type="password" name="PWConf" value="" />
 <input type="submit" name="action" value="Register"/>
 <p style="color:red;"> <?php echo($errorString); ?> </p>
+<p style="color:#87D37C;"> <?php echo($successString); ?> </p>
 </div>
 </form>
 </div> 

@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -19,7 +20,9 @@ include_once("models/reports.php");
 include_once("db.php");
 
 $email =  $_POST['Email'];
+if(!$_SESSION['Email']){
 $_SESSION['Email'] = $email;
+}
 $pw = $_POST['PW'];
 $action = $_REQUEST['action'];
 $emailConf = $_POST['EmailConf'];
@@ -36,14 +39,20 @@ switch($action){
     case 'Login':
     $hash = grabHash($_SESSION["Email"]);
     $userId= grabUserId($email);
-    $isAdmin = getAdminStatus($userId);
+    if(!$_SESSION['isAdmin']){
+    $_SESSION['isAdmin'] = getAdminStatus($userId);
+    }
+    if(!$_SESSION['id']){
     $_SESSION['id'] = $userId;
+    }
+
+    if(!$_SESSION['templateId']){
     $_SESSION['templateId'] = grabTemplateId($email);
+    }
     $questions = getQuestions($_SESSION['templateId']);
-    $reportId = getReportData($userId, $_SESSION['templateId']);
+    $reportId = getReportData($_SESSION['id'], $_SESSION['templateId']);
     $responses = getResponsesByReportId($reportId);
     $dates = getDatesByReportId($reportId, $questionId);
-
     for($i=0; $i < sizeof($questions); $i++){
         $response[$i] = [];
         $response[$i] = getResponsesByQuestionId($questions[$i]['QuestionID'], $reportId);
@@ -60,10 +69,13 @@ switch($action){
     $chartData=json_encode($response);
     $chartLabels=json_encode($date);
     include_once("charts.php");
-        
    if(password_verify($pw, $hash)){
     $templateDropDown = pullTemplatesForDropDown();
     include_once('views/tracker.php');
+    }
+    elseif($_SESSION['id']){
+        $templateDropDown = pullTemplatesForDropDown();
+        include_once('views/tracker.php');
     }
     else{
         include_once('views/userLogin.php');
@@ -75,13 +87,14 @@ switch($action){
     if(confirm($pw, $pwConf) && emailNotExists($email)){
     $hash = password_hash($pw, PASSWORD_DEFAULT);
     addUser($email, $hash, $fName, $lName, $bDay);
+    $successString = 'Successfully Registered! Please log in to continue';
     }
 
    if(!confirm($pw,$pwConf)){
         $errorString .= "<br/> Password must match confirmation";   
     }
 
-    if(emailNotExists($email) == false){
+    if(emailNotExists($email)){
         $errorString .= "<br/> Email already registered.";   
     }
     include_once('views/userLogin.php');
@@ -90,6 +103,21 @@ switch($action){
     case 'User':
     $user = getUserData($_SESSION['id']);
     include_once('views/shared/userEdit.php');
+    break;
+
+    case 'Edit':
+    if($_GET['userId']){
+        $user = getUserData($_GET['userId']);
+        $adminPage = true;
+        include_once('views/shared/userEdit.php');
+
+    }
+    if($_GET['templateId']){
+        $questions = getQuestions($_GET['templateId']);
+        $adminPage = true;
+        include_once('views/admin/adminTemplate.php');
+
+    }
     break;
     
     case 'Logout':
@@ -101,6 +129,7 @@ switch($action){
     include_once("models/users.php");
     $users = getAllUsers();
     $templates = getAllTemplates();
+    $adminPage = true;
     include_once('views/admin/adminMain.php');
     break;
 
@@ -110,7 +139,6 @@ switch($action){
     $questions = getQuestions($_SESSION['templateId']);
     $reportId = getReportData($_SESSION['id'], $_SESSION['templateId']);
     if(!$reportId){
-        echo("big dum dum");
         addReport($_SESSION['templateId'], $_SESSION['id']);
     }
     $responses = getResponsesByReportId($reportId);
@@ -136,7 +164,23 @@ switch($action){
     include_once('views/tracker.php');
     break;
 
+    case 'Delete':
+        if($_GET['userId']){
+            $userReports = getReportsByUserId($_GET['userId']);
+
+            foreach($userReports as $report){
+            deleteResponsesByUserId($report["ReportID"]);
+            }
+            deleteReportsByUserId($_GET['userId']);
+            deleteUserById($_GET['userId']);
+        }
+        $users = getAllUsers();
+        $templates = getAllTemplates();
+        $adminPage = true;
+        include_once('views/admin/adminMain.php');
+    break;
     case 'Home':
+    if(!$adminPage){
     var_dump($_SESSION['templateId'], $_SESSION['id']);
     changeUserTemplate($_SESSION['id'], $_SESSION['templateId']);
     $questions = getQuestions($_SESSION['templateId']);
@@ -168,7 +212,16 @@ switch($action){
 
     $templateDropDown = pullTemplatesForDropDown();
     include_once('views/tracker.php');
+    }
+    if($adminPage){
+        include_once("models/users.php");
+        $users = getAllUsers();
+        $templates = getAllTemplates();
+        include_once('views/admin/adminMain.php');
+    }
     break;
+
+    
     case '':
     include_once('views/userLogin.php');
     break;

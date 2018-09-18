@@ -1,7 +1,7 @@
 <?php
 session_start(); 
 echo session_id();
-include "../db.php";
+include("db.php");
 if($_POST['user']){
 	$user = $_POST['user'];
 	var_dump($user);
@@ -21,6 +21,14 @@ function changePassword($pass, $userId){
 	$stmt = $db->prepare($sql);
 	$stmt->bindParam(':userId', $userId);
 	$stmt->bindParam(':pw', $pass);
+	$stmt->execute();	
+}
+
+function deleteUserById($userId){
+	global $db;
+	$sql = "DELETE FROM users WHERE UserID = :userId";
+	$stmt = $db->prepare($sql);
+	$stmt->bindParam(':userId', $userId);
 	$stmt->execute();	
 }
 

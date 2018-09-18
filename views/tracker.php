@@ -61,7 +61,7 @@ function changeTemplate(){
     <form action="index.php" method="POST">
     <button name='action' value='User'> My Account </button>
     <button name='action' value='Logout'> Logout </button>
-    <?php if($isAdmin == 1){ ?>
+    <?php if($_SESSION['isAdmin'] == 1){ ?>
         <button name='action' value='Admin'> Admin Portal </button>
       <?php } ?>
     </form>

@@ -1,8 +1,4 @@
-<?php session_start(); 
-    echo session_id();
-    var_dump($_SESSION['Email']);
-    
-    ?>
+<?php session_start(); ?>
 <nav class="signUp row">
 	<span class='col-sm-2'> </span>
 	        <h1 class="col-sm-3"> Step By Step </h1>
@@ -10,6 +6,9 @@
         <form action="index.php" method="POST">
             <button name='action' value='Home'> Home </button>
             <button name='action' value='User'> My Account </button>
+            <?php if($_SESSION['isAdmin'] == 1){ ?>
+            <button name='action' value='Admin'> Admin Portal </button>
+            <?php } ?>
             <button name='action' value='Logout'> Logout </button>
         </form>
 </nav>

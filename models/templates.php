@@ -20,5 +20,13 @@ function getAllTemplates(){
 
 }
 
+function deleteTemplateById($templateId){
+	global $db;
+	$sql = "DELETE FROM templates WHERE TemplateID = :templateId";
+	$stmt = $db->prepare($sql);
+	$stmt->bindParam(':templateId', $templateId);
+	$stmt->execute();
+}
+
 
 ?>

@@ -1,5 +1,4 @@
 <?php
-include("../db.php");
 include("db.php");
 
 function jsonifyData($item){
@@ -34,6 +33,14 @@ function getResponsesByReportId($reportId){
     return $results;
 
 
+}
+
+function deleteResponsesByUserId($reportId){
+    global $db;
+    $sql = "DELETE FROM responses WHERE ReportID = :reportId";
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':reportId', $reportId);
+    $stmt->execute();
 }
 
 function getResponsesByQuestionId($questionId, $reportId){
